@@ -27,5 +27,5 @@ if __name__ == "__main__":
     """
     We will close any connection we have to the database 
     """
-    cur.close
+    cur.close()
     db.close()
