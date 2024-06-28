@@ -24,7 +24,7 @@ if __name__ == "__main__":
     The cursor function will help execute the ORM MySql scripts in python
     """
 
-    cur = conn.cursor
+    cur = conn.cursor()
     cur.execute("SELECT * FROM states ORDER BY id ASC")
     results = cur.fetchall()
 
@@ -33,6 +33,6 @@ if __name__ == "__main__":
     """
     The ORM will require us to close any open connections once we are done executing for this current Session
     """
-    cur.close
-    conn.close
+    cur.close()
+    conn.close()
 
