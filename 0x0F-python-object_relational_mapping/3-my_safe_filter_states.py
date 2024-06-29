@@ -1,40 +1,38 @@
 #!/usr/bin/python3
 """
-We will write a script that is safe from MySQL injections which will take as 
-argument command-line arguments tp display all values in the states table of the hbtn_0e_0_usa where 
-name matches the argument.
+Write a script that takes in argument and displays all values in the states
+table of hbtn_0e_0_usa where name matches the argumwnt. Ensure that your script
+is safe from MySQL injections
 """
 import MySQLdb
 import sys
 
 if __name__ == "__main__":
-"""
-We will try to connect to a MySQL database using 
-command-line arguments and it will throw an error if there is a problem connecting to the server
 
-"""
-
+    """
+    We will try to connect to the database using command line arguments
+    which will be passed in by the user
+    """
     try:
-        conn = MySQLdb.connect(host="localhost", user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+        conn = MySQLdb.connect(host="localhost", port=3306, user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
     except MySQLdb.Error as e:
         print("Error connecting to database: {}".format(e))
+        sys.exit(1)
 
+    """
+    We will use the cursor to execute SQL queries 
+    """
     cur = conn.cursor()
-    """
-    We will need to execute the scripts in such a way that our code will not be prone to a 
-    MySQL injection
-    """
-    cur.execute("SELECT * FROM states WHERE name LIKE BINARY '{}' \
-    ORDER BY states.id ASC".format(sys.argv[4]))
+    cur.execute("SELECT * FROM states WHERE name LIKE BINARY %(name)s\
+            ORDER BY states.id ASC", {'name': sys.argv[4]})
     results = cur.fetchall()
-    """
-    We will return the result from the results tuple once our results have been processed by the server for 
-    this session of the execution.
-    """
+
     for result in results:
         print(result)
+
     """
-    We are required to close the any connections to the database using the close function
+    We are required to close any connection to the database once we
+    are done executing the queries
     """
     cur.close()
     conn.close()

@@ -11,11 +11,19 @@ if __name__ = "__main__":
     mysql_password = sys.argv[2]
     db_name = sys.argv[3]
 
+    """
+    We willl try to connect to the database except if there is an error 
+    """
+
      try:
         conn = MySQLdb.connect(host="localhost", port=3306, user=mysql_username, passwd=mysql_password, db=db_name)
     except MySQLdb.Error as e:
         print("Error Connecting to database: {}".format(e))
         sys.exit(1)
+
+    """
+    We will use cursor to execute queries on the database
+    """
     
     cur = conn.cursor()
     cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' \
@@ -24,6 +32,10 @@ if __name__ = "__main__":
 
     for result in results:
         print(result)
+    """
+    We are required to close all connections to the database once we are done
+    executing the queries
+    """
     
     cur.close()
     conn.close()
