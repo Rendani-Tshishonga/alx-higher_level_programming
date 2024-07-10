@@ -6,7 +6,7 @@ Write a script that lists all states with a name starting with N (Upper N) from 
 import MySQLdb
 import sys
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     mysql_username = sys.argv[1]
     mysql_password = sys.argv[2]
     db_name = sys.argv[3]
@@ -15,7 +15,7 @@ if __name__ = "__main__":
     We willl try to connect to the database except if there is an error 
     """
 
-     try:
+    try:
         conn = MySQLdb.connect(host="localhost", port=3306, user=mysql_username, passwd=mysql_password, db=db_name)
     except MySQLdb.Error as e:
         print("Error Connecting to database: {}".format(e))
@@ -27,7 +27,7 @@ if __name__ = "__main__":
     
     cur = conn.cursor()
     cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' \
-    ORDER BY state.id ASC")
+    ORDER BY states.id ASC")
     results = cur.fetchall()
 
     for result in results:
